@@ -31,11 +31,11 @@ class Img_PrePossessing:
 
     # noise removal
     def remove_noise(self):
-        return cv2.medianBlur(self.image, 3)
+        return cv2.medianBlur(self.image, 5)
 
     # thresholding
     def thresholding(self):
-        return cv2.adaptiveThreshold(cv2.medianBlur(self.image, 3), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+        return cv2.adaptiveThreshold(cv2.medianBlur(self.image, 5), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                      cv2.THRESH_BINARY,
                                      31, 2)
 

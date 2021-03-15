@@ -14,7 +14,6 @@ class Img_PrePossessing:
         self.image = self.remove_noise()
         self.image = self.thresholding()
         self.image = self.erode()
-
         return self.image
 
     # reading image
@@ -23,7 +22,8 @@ class Img_PrePossessing:
 
     # resize image
     def resize(self):
-        return cv2.resize(self.image, None, fx=1, fy=1, interpolation=cv2.INTER_AREA)
+        # return cv2.resize(self.image, None, fx=1, fy=1, interpolation=cv2.INTER_AREA)
+        return cv2.resize(self.image, None, fx=1, fy=1, interpolation=cv2.INTER_CUBIC)
 
     # get grayscale image
     def get_grayscale(self):
@@ -35,9 +35,7 @@ class Img_PrePossessing:
 
     # thresholding
     def thresholding(self):
-        return cv2.adaptiveThreshold(cv2.medianBlur(self.image, 5), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-                                     cv2.THRESH_BINARY,
-                                     31, 2)
+        return cv2.threshold(cv2.bilateralFilter(self.image, 3, 75, 75), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
 
     # erosion
     def erode(self):

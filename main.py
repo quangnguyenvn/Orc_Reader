@@ -9,16 +9,8 @@ from correction import Txt_Correction
 from pdfReader import pdf_Read
 from prePossessing import Img_PrePossessing
 
-# initializing bad_chars_list
-bad_chars = [';', ':', '!', "*", "`", "'"]
-
 pytesseract.pytesseract.tesseract_cmd = {YOUR_CURRENT_TESSERACT_EXE_PATH}
-# Exp: pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe'
-
-# function remove non Ascii chars
-def removeNonAscii(text):
-    return "".join(i for i in text if ord(i) < 128)
-
+# EXP: pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe'
 
 # log output file from 3rd param when run cmd
 logger = logging.getLogger(__name__)
@@ -38,7 +30,6 @@ file_path = str(sys.argv[1])
 split_path = os.path.splitext(file_path)
 file_extension = split_path[1]
 
-# Handle file for each type
 if file_extension == '.png' or file_extension == '.jpeg' or file_extension == '.jpg':
     # Step1. Image Pre-Possessing
     imgProssessing = Img_PrePossessing(file_path)
@@ -48,9 +39,7 @@ if file_extension == '.png' or file_extension == '.jpeg' or file_extension == '.
     logger.warning(image_text)
 
     # Step2. Remove unrecognized char and text Correction after reading
-    nonAscii_txt = removeNonAscii(str(image_text))
-    refined_txt = ''.join((filter(lambda i: i not in bad_chars, str(nonAscii_txt))))
-    textCorrection = Txt_Correction(refined_txt)
+    textCorrection = Txt_Correction(image_text)
     correction_text = textCorrection.text_correction()
     logger.warning('Text after being corrected:')
     logger.warning(correction_text)
@@ -65,9 +54,7 @@ elif file_extension == '.pdf':
     pdf_text = pdf_read.text_reading()
 
     # Step.2 Correction pdf text after reading
-    nonAscii_txt = removeNonAscii(str(pdf_text))
-    refined_txt = ''.join((filter(lambda i: i not in bad_chars, str(nonAscii_txt))))
-    textCorrection = Txt_Correction(refined_txt)
+    textCorrection = Txt_Correction(pdf_text)
     correction_text = textCorrection.text_correction()
     logger.warning('PDF reading text:')
     logger.warning(correction_text)

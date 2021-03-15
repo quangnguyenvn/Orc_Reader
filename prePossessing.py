@@ -22,7 +22,6 @@ class Img_PrePossessing:
 
     # resize image
     def resize(self):
-        # return cv2.resize(self.image, None, fx=1, fy=1, interpolation=cv2.INTER_AREA)
         return cv2.resize(self.image, None, fx=1, fy=1, interpolation=cv2.INTER_CUBIC)
 
     # get grayscale image
